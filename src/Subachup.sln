@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{EB8B8D8E-FAF5-42D8-B2CF-056DC3C29870}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{4069CDA4-1624-4159-AB57-7C6F8875D3F1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		AutomatedDebug|Any CPU = AutomatedDebug|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB8B8D8E-FAF5-42D8-B2CF-056DC3C29870}.AutomatedDebug|Any CPU.ActiveCfg = AutomatedDebug|Any CPU
+		{EB8B8D8E-FAF5-42D8-B2CF-056DC3C29870}.AutomatedDebug|Any CPU.Build.0 = AutomatedDebug|Any CPU
+		{EB8B8D8E-FAF5-42D8-B2CF-056DC3C29870}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB8B8D8E-FAF5-42D8-B2CF-056DC3C29870}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB8B8D8E-FAF5-42D8-B2CF-056DC3C29870}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB8B8D8E-FAF5-42D8-B2CF-056DC3C29870}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4069CDA4-1624-4159-AB57-7C6F8875D3F1}.AutomatedDebug|Any CPU.ActiveCfg = AutomatedDebug|Any CPU
+		{4069CDA4-1624-4159-AB57-7C6F8875D3F1}.AutomatedDebug|Any CPU.Build.0 = AutomatedDebug|Any CPU
+		{4069CDA4-1624-4159-AB57-7C6F8875D3F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4069CDA4-1624-4159-AB57-7C6F8875D3F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4069CDA4-1624-4159-AB57-7C6F8875D3F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4069CDA4-1624-4159-AB57-7C6F8875D3F1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
