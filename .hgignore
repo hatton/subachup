@@ -1,0 +1,4 @@
+syntax: glob
+src\Core\obj\Debug/*.pdb
+src\Core\obj\Debug/*.txt
+src\Core\obj\Debug/*.resources
