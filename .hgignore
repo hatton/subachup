@@ -1,4 +1,6 @@
 syntax: glob
+src/*.user
+src\Core/*.user
 src\_ReSharper.Subachup/*.Metadata
 src/*.suo
 src\Core\obj\Debug
