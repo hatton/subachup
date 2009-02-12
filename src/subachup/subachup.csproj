@@ -10,15 +10,17 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>subachup</RootNamespace>
     <AssemblyName>subachup</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>subachup.Program</StartupObject>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\output\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -53,9 +55,6 @@
       <HintPath>..\..\lib\nBASS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -76,7 +75,7 @@
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GatherTab.cs" />
+    <Compile Include="stuffFromPrototype\GatherTab.cs" />
     <Compile Include="stuffFromPrototype\GoogleImage.cs" />
     <Compile Include="ListenControl.cs">
       <SubType>UserControl</SubType>
@@ -87,7 +86,7 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GatherTab.resx">
+    <EmbeddedResource Include="stuffFromPrototype\GatherTab.resx">
       <DependentUpon>GatherTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="stuffFromPrototype\GoogleImage.resx">
@@ -104,7 +103,7 @@
     <EmbeddedResource Include="RecognitionQuizControl.resx">
       <DependentUpon>RecognitionQuizControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RecordTab.resx">
+    <EmbeddedResource Include="stuffFromPrototype\RecordTab.resx">
       <DependentUpon>RecordTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StatusDisplay.resx">
@@ -120,6 +119,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -135,7 +135,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="RecognitionQuizControl.Designer.cs" />
-    <Compile Include="RecordTab.cs">
+    <Compile Include="stuffFromPrototype\RecordTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="RecordTab.Designer.cs" />
@@ -158,6 +158,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="bass.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="basswma.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="correct.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

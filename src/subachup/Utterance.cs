@@ -1,4 +1,5 @@
 using System;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Drawing;
 using System.Collections;
@@ -540,25 +541,33 @@ namespace Subachup
 
         private Image MakeThumbnail(Image image, int width, int height)
         {
-            float destinationRatio = (float)width / height;
-            float imageRatio = (float)image.Height / image.Width;
-            int newWidth;
-            int newHeight;
-            if (imageRatio > destinationRatio)
-            {
-                newWidth = (int)(height / imageRatio);
-                newHeight = height;
-            }
-            else
-            {
-                newWidth = width;
-                newHeight = (int)(width * imageRatio);
-            }
-            Bitmap b = new Bitmap(width, height);
-            System.Drawing.Graphics g = Graphics.FromImage(b);
-            g.DrawImage(image, (width - newWidth) / 2, (height - newHeight) / 2, newWidth, newHeight);
-            g.Dispose();
-            return b;
+            width = image.Width > width ? width : image.Width;
+            height = image.Height > height ? height : image.Height;
+
+            Bitmap retBmp = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format64bppPArgb);
+
+            Graphics grp = Graphics.FromImage(retBmp);
+
+
+            int tnWidth = width, tnHeight = height;
+
+            if (image.Width > image.Height)
+                tnHeight = (int)(((float)image.Height / (float)image.Width) * tnWidth);
+            else if (image.Width < image.Height)
+                tnWidth = (int)(((float)image.Width / (float)image.Height) * tnHeight);
+
+            int iLeft = (width / 2) - (tnWidth / 2);
+            int iTop = (height / 2) - (tnHeight / 2);
+
+            grp.PixelOffsetMode = PixelOffsetMode.None;
+            grp.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+            grp.DrawImage(image, iLeft, iTop, tnWidth, tnHeight);
+
+//            Pen pn = new Pen(borderColor, 1); //Color.Wheat
+//            grp.DrawRectangle(pn, 0, 0, retBmp.Width - 1, retBmp.Height - 1);
+
+            return retBmp;
         }
 	}
 }

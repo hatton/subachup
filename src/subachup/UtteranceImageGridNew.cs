@@ -73,7 +73,6 @@ namespace Subachup.Core
 
 
             Image thumb = utterance.GetThumbNail(_imageList.ImageSize.Width, _imageList.ImageSize.Height);// GetMatchingImage(imagesDirectory, utterance);
-
             ListViewItem item = new ListViewItem(utterance.Gloss);
             item.Tag = utterance;
 
