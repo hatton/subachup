@@ -23,6 +23,8 @@ namespace Subachup
 
         private void _utteranceImageGrid_Clicked(object sender, EventArgs e)
         {
+            if (_utteranceImageGrid.Grid.SelectedItems.Count ==0)
+                return;
             ListViewItem item = _utteranceImageGrid.Grid.SelectedItems[0];
             string path = ((Utterance)item.Tag).SoundPath;
             nBASS.Stream sound = _player.LoadStream(ResolveSoundPath(path));

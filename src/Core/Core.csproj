@@ -6,8 +6,7 @@
     <ProjectGuid>{EB8B8D8E-FAF5-42D8-B2CF-056DC3C29870}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>subachup.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>Subachup.Core</AssemblyName>
@@ -20,8 +19,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Subachup.Core</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>Subachup.Form1</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -175,6 +173,12 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="RecordTab.Designer.cs" />
+    <Compile Include="Shell.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Shell.Designer.cs">
+      <DependentUpon>Shell.cs</DependentUpon>
+    </Compile>
     <Compile Include="ShellHelper.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -188,16 +192,24 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SubachupTabControl.Designer.cs" />
+    <Compile Include="UserControl1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl1.Designer.cs">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utterance.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UtteranceCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UtteranceImageGrid.cs">
+    <Compile Include="UtteranceImageGridNew.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UtteranceImageGrid.Designer.cs" />
+    <Compile Include="UtteranceImageGridNew.Designer.cs">
+      <DependentUpon>UtteranceImageGridNew.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -216,20 +228,27 @@
     <EmbeddedResource Include="RecordTab.resx">
       <DependentUpon>RecordTab.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Shell.resx">
+      <DependentUpon>Shell.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="StatusDisplay.resx">
       <DependentUpon>StatusDisplay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SubachupTabControl.resx">
       <DependentUpon>SubachupTabControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UtteranceImageGrid.resx">
-      <DependentUpon>UtteranceImageGrid.cs</DependentUpon>
+    <EmbeddedResource Include="UserControl1.resx">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UtteranceImageGridNew.resx">
+      <DependentUpon>UtteranceImageGridNew.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="correct.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="subachup.ico" />
     <Content Include="wrong.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

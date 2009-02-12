@@ -41,7 +41,7 @@ namespace Subachup
             this._utteranceImageGrid.Name = "_utteranceImageGrid";
             this._utteranceImageGrid.Size = new System.Drawing.Size(850, 585);
             this._utteranceImageGrid.TabIndex = 0;
-         //   this._utteranceImageGrid.Clicked += new System.EventHandler(this._utteranceImageGrid_Clicked);
+            this._utteranceImageGrid.Clicked += new System.EventHandler(this._utteranceImageGrid_Clicked);
             // 
             // ListenControl
             // 

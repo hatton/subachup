@@ -38,7 +38,6 @@ namespace Subachup
 		protected PropertyTable _propertyTable;
         private MenuItem menuItem2;
         private MenuItem mnuPaste;
-        private UserControl1 userControl11;
 
         protected TabPage  _previousPage;
 
@@ -77,146 +76,137 @@ namespace Subachup
 		{
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-//            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-//            this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
-//            this.menuItem1 = new System.Windows.Forms.MenuItem();
-//            this.mnuChooseFolder = new System.Windows.Forms.MenuItem();
-//            this.menuISave = new System.Windows.Forms.MenuItem();
-//            this.menuSaveAs = new System.Windows.Forms.MenuItem();
-//            this.menuItem3 = new System.Windows.Forms.MenuItem();
-//            this.menuMRU = new System.Windows.Forms.MenuItem();
-//            this.menuItem2 = new System.Windows.Forms.MenuItem();
-//            this.mnuPaste = new System.Windows.Forms.MenuItem();
-//            this.menuItem5 = new System.Windows.Forms.MenuItem();
-//            this.mnuSave = new System.Windows.Forms.MenuItem();
-//            this.mnuSaveAs = new System.Windows.Forms.MenuItem();
-//            this.mruHandler1 = new MostRecentlyUsedHandler.MRUHandler(this.components);
-//            this.statusDisplay1 = new LQ.StatusDisplay();
-//            this._modeControl = new System.Windows.Forms.TabControl();
-            this.userControl11 = new Subachup.Core.UserControl1();
-            //((System.ComponentModel.ISupportInitialize)(this.mruHandler1)).BeginInit();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.mnuChooseFolder = new System.Windows.Forms.MenuItem();
+            this.menuISave = new System.Windows.Forms.MenuItem();
+            this.menuSaveAs = new System.Windows.Forms.MenuItem();
+            this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.menuMRU = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.mnuPaste = new System.Windows.Forms.MenuItem();
+            this.menuItem5 = new System.Windows.Forms.MenuItem();
+            this.mnuSave = new System.Windows.Forms.MenuItem();
+            this.mnuSaveAs = new System.Windows.Forms.MenuItem();
+            this.mruHandler1 = new MostRecentlyUsedHandler.MRUHandler(this.components);
+            this.statusDisplay1 = new LQ.StatusDisplay();
+            this._modeControl = new System.Windows.Forms.TabControl();
+            ((System.ComponentModel.ISupportInitialize)(this.mruHandler1)).BeginInit();
             this.SuspendLayout();
             // 
             // folderBrowserDialog1
             // 
-//            this.folderBrowserDialog1.SelectedPath = "C:\\";
-//            // 
-//            // mainMenu1
-//            // 
-//            this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-//            this.menuItem1,
-//            this.menuItem2});
-//            // 
-//            // menuItem1
-//            // 
-//            this.menuItem1.Index = 0;
-//            this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-//            this.mnuChooseFolder,
-//            this.menuISave,
-//            this.menuSaveAs,
-//            this.menuItem3,
-//            this.menuMRU});
-//            this.menuItem1.Text = "&File";
-//            // 
-//            // mnuChooseFolder
-//            // 
-//            this.mnuChooseFolder.Index = 0;
-//            this.mnuChooseFolder.Text = "&Choose Group...";
-//            this.mnuChooseFolder.Click += new System.EventHandler(this.OnChooseFile);
-//            // 
-//            // menuISave
-//            // 
-//            this.menuISave.Index = 1;
-//            this.menuISave.Text = "&Save";
-//            this.menuISave.Click += new System.EventHandler(this.mnuSave_Click);
-//            // 
-//            // menuSaveAs
-//            // 
-//            this.menuSaveAs.Index = 2;
-//            this.menuSaveAs.Text = "Save &As...";
-//            this.menuSaveAs.Click += new System.EventHandler(this.mnuSaveAs_Click);
-//            // 
-//            // menuItem3
-//            // 
-//            this.menuItem3.Index = 3;
-//            this.menuItem3.Text = "-";
-//            // 
-//            // menuMRU
-//            // 
-//            this.menuMRU.Index = 4;
-//            this.menuMRU.Text = "MRU";
-//            // 
-//            // menuItem2
-//            // 
-//            this.menuItem2.Index = 1;
-//            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-//            this.mnuPaste});
-//            this.menuItem2.Text = "&Edit";
-//            // 
-//            // mnuPaste
-//            // 
-//            this.mnuPaste.Enabled = false;
-//            this.mnuPaste.Index = 0;
-//            this.mnuPaste.Shortcut = System.Windows.Forms.Shortcut.CtrlV;
-//            this.mnuPaste.Text = "&Paste Picture";
-//            this.mnuPaste.Click += new System.EventHandler(this.OnPastePicture);
-//            // 
-//            // menuItem5
-//            // 
-//            this.menuItem5.Index = -1;
-//            this.menuItem5.Text = "-";
-//            // 
-//            // mnuSave
-//            // 
-//            this.mnuSave.Index = -1;
-//            this.mnuSave.Text = "&Save";
-//            this.mnuSave.Click += new System.EventHandler(this.mnuSave_Click);
-//            // 
-//            // mnuSaveAs
-//            // 
-//            this.mnuSaveAs.Index = -1;
-//            this.mnuSaveAs.Text = "Save As...";
-//            this.mnuSaveAs.Click += new System.EventHandler(this.mnuSaveAs_Click);
-//            // 
-//            // mruHandler1
-//            // 
-//            this.mruHandler1.MruItem = this.menuMRU;
-//            this.mruHandler1.MRUStyle = MostRecentlyUsedHandler.MRUStyle.Inline;
-//            this.mruHandler1.StorageName = "mru";
-//            this.mruHandler1.MRUItemClicked += new MostRecentlyUsedHandler.MRUItemClickedHandler(this.mruHandler1_MRUItemClicked);
-//            // 
-//            // statusDisplay1
-//            // 
-//            this.statusDisplay1.Dock = System.Windows.Forms.DockStyle.Bottom;
-//            this.statusDisplay1.Location = new System.Drawing.Point(0, 514);
-//            this.statusDisplay1.Name = "statusDisplay1";
-//            this.statusDisplay1.Size = new System.Drawing.Size(807, 13);
-//            this.statusDisplay1.TabIndex = 10;
-//            // 
-//            // _modeControl
-//            // 
-//            this._modeControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-//                        | System.Windows.Forms.AnchorStyles.Left)
-//                        | System.Windows.Forms.AnchorStyles.Right)));
-//            this._modeControl.Location = new System.Drawing.Point(6, 9);
-//            this._modeControl.Name = "_modeControl";
-//            this._modeControl.SelectedIndex = 0;
-//            this._modeControl.Size = new System.Drawing.Size(779, 256);
-//            this._modeControl.TabIndex = 14;
-//            this._modeControl.SelectedIndexChanged += new System.EventHandler(this._modeControl_SelectedIndexChanged);
-//            // 
-            // userControl11
+            this.folderBrowserDialog1.SelectedPath = "C:\\";
             // 
-            this.userControl11.Location = new System.Drawing.Point(115, 348);
-            this.userControl11.Name = "userControl11";
-            this.userControl11.Size = new System.Drawing.Size(150, 150);
-            this.userControl11.TabIndex = 15;
+            // mainMenu1
+            // 
+            this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuItem1,
+            this.menuItem2});
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 0;
+            this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.mnuChooseFolder,
+            this.menuISave,
+            this.menuSaveAs,
+            this.menuItem3,
+            this.menuMRU});
+            this.menuItem1.Text = "&File";
+            // 
+            // mnuChooseFolder
+            // 
+            this.mnuChooseFolder.Index = 0;
+            this.mnuChooseFolder.Text = "&Choose Group...";
+            this.mnuChooseFolder.Click += new System.EventHandler(this.OnChooseFile);
+            // 
+            // menuISave
+            // 
+            this.menuISave.Index = 1;
+            this.menuISave.Text = "&Save";
+            this.menuISave.Click += new System.EventHandler(this.mnuSave_Click);
+            // 
+            // menuSaveAs
+            // 
+            this.menuSaveAs.Index = 2;
+            this.menuSaveAs.Text = "Save &As...";
+            this.menuSaveAs.Click += new System.EventHandler(this.mnuSaveAs_Click);
+            // 
+            // menuItem3
+            // 
+            this.menuItem3.Index = 3;
+            this.menuItem3.Text = "-";
+            // 
+            // menuMRU
+            // 
+            this.menuMRU.Index = 4;
+            this.menuMRU.Text = "MRU";
+            // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 1;
+            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.mnuPaste});
+            this.menuItem2.Text = "&Edit";
+            // 
+            // mnuPaste
+            // 
+            this.mnuPaste.Enabled = false;
+            this.mnuPaste.Index = 0;
+            this.mnuPaste.Shortcut = System.Windows.Forms.Shortcut.CtrlV;
+            this.mnuPaste.Text = "&Paste Picture";
+            this.mnuPaste.Click += new System.EventHandler(this.OnPastePicture);
+            // 
+            // menuItem5
+            // 
+            this.menuItem5.Index = -1;
+            this.menuItem5.Text = "-";
+            // 
+            // mnuSave
+            // 
+            this.mnuSave.Index = -1;
+            this.mnuSave.Text = "&Save";
+            this.mnuSave.Click += new System.EventHandler(this.mnuSave_Click);
+            // 
+            // mnuSaveAs
+            // 
+            this.mnuSaveAs.Index = -1;
+            this.mnuSaveAs.Text = "Save As...";
+            this.mnuSaveAs.Click += new System.EventHandler(this.mnuSaveAs_Click);
+            // 
+            // mruHandler1
+            // 
+            this.mruHandler1.MruItem = this.menuMRU;
+            this.mruHandler1.MRUStyle = MostRecentlyUsedHandler.MRUStyle.Inline;
+            this.mruHandler1.StorageName = "mru";
+            this.mruHandler1.MRUItemClicked += new MostRecentlyUsedHandler.MRUItemClickedHandler(this.mruHandler1_MRUItemClicked);
+            // 
+            // statusDisplay1
+            // 
+            this.statusDisplay1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.statusDisplay1.Location = new System.Drawing.Point(0, 514);
+            this.statusDisplay1.Name = "statusDisplay1";
+            this.statusDisplay1.Size = new System.Drawing.Size(807, 13);
+            this.statusDisplay1.TabIndex = 10;
+            // 
+            // _modeControl
+            // 
+            this._modeControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._modeControl.Location = new System.Drawing.Point(6, 9);
+            this._modeControl.Name = "_modeControl";
+            this._modeControl.SelectedIndex = 0;
+            this._modeControl.Size = new System.Drawing.Size(779, 506);
+            this._modeControl.TabIndex = 14;
+            this._modeControl.SelectedIndexChanged += new System.EventHandler(this._modeControl_SelectedIndexChanged);
             // 
             // Form1
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(807, 527);
-            this.Controls.Add(this.userControl11);
             this.Controls.Add(this._modeControl);
             this.Controls.Add(this.statusDisplay1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -225,67 +215,38 @@ namespace Subachup
             this.Text = "Subachup!";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Closing += new System.ComponentModel.CancelEventHandler(this.Form1_Closing);
- //           ((System.ComponentModel.ISupportInitialize)(this.mruHandler1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mruHandler1)).EndInit();
             this.ResumeLayout(false);
 
 		}
 		#endregion
 
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		[STAThread]
-		static void Main() 
-		{
-			Application.Run(new Form1());
-		}
 
 
 	
 
 		private void Form1_Load(object sender, System.EventArgs e)
 		{
-//			_propertyTable.RestoreFromFile(null);
-//
-//			if(Directory.Exists(LastUsedPlayListPath))
-//			{
-//				UseGroupFile(LastUsedPlayListPath, false);
-//			}
-//
-//			UtteranceCollection.CurrentUtteranceSet.LoadUserStuff();
-//
-//
-//             AddTab(new ListenControl(_propertyTable), "Listen");
-//           AddTab(new RecognitionQuizControl(_propertyTable), "Comprehension Quiz");
-//          //  AddTab(new GatherTab(_propertyTable), "Gather");
-//
-//            _previousPage = _modeControl.SelectedTab;
-//            if (_modeControl.SelectedTab != null)
-//                CurrentSubachupControl.Showing();
-//
-//		    AddTestTab();
+			_propertyTable.RestoreFromFile(null);
+
+			if(Directory.Exists(LastUsedPlayListPath))
+			{
+				UseGroupFile(LastUsedPlayListPath, false);
+			}
+
+			UtteranceCollection.CurrentUtteranceSet.LoadUserStuff();
+
+
+             AddTab(new ListenControl(_propertyTable), "Listen");
+           AddTab(new RecognitionQuizControl(_propertyTable), "Comprehension Quiz");
+          //  AddTab(new GatherTab(_propertyTable), "Gather");
+
+            _previousPage = _modeControl.SelectedTab;
+            if (_modeControl.SelectedTab != null)
+                CurrentSubachupControl.Showing();
+
 		}
 
-        private void AddTestTab()
-        {
-            System.Windows.Forms.TabPage page = new System.Windows.Forms.TabPage();
-            var control = new UserControl1();
-
-            control.Dock = System.Windows.Forms.DockStyle.Fill;
-            control.Location = new System.Drawing.Point(0, 0);
-            control.Size = new System.Drawing.Size(771, 481);
-            control.TabIndex = 0;
-
-            page.Controls.Add(control);
-            page.Location = new System.Drawing.Point(4, 22);
-            page.Name = "test";
-            page.Size = new System.Drawing.Size(771, 481);
-            page.TabIndex = 1;
-            page.Text = "test";
-            page.Tag = control;
-            _modeControl.TabPages.Add(page);
-
-        }
 
         private void AddTab(SubachupTabControl  control, string label)
         {

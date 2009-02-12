@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace Subachup.Core
 {
-    public partial class UtteranceImageGrid : UserControl
+    public partial class UserControl1 : UserControl
     {
-        public UtteranceImageGrid()
+        public UserControl1()
         {
             InitializeComponent();
         }
