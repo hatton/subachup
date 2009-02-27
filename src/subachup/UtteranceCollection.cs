@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections;
 using System.Windows.Forms;
 using System.Xml;
+using subachup;
 
 
 namespace Subachup
@@ -13,21 +14,21 @@ namespace Subachup
 	/// </summary>
 	public class UtteranceCollection: ArrayList
 	{
-		protected  static UtteranceCollection _currentUtteranceSet;
-	    private XmlDocument _liftDom;
+	    private readonly LiftProject _liftProject;
+	    protected  static UtteranceCollection _currentUtteranceSet;
 	    public event System.EventHandler Changed;
 
-		public UtteranceCollection()
+		public UtteranceCollection(LiftProject liftProject)
 		{
-           
+		    _liftProject = liftProject;
 		}
 
-		public static UtteranceCollection CurrentUtteranceSet
+	    public static UtteranceCollection CurrentUtteranceSet
 		{
 			get
 			{
-				if(_currentUtteranceSet==null)
-					CurrentUtteranceSet= new UtteranceCollection();
+//				if(_currentUtteranceSet==null)
+//					CurrentUtteranceSet= new UtteranceCollection();
 
 				return _currentUtteranceSet;
 			}
@@ -139,113 +140,70 @@ namespace Subachup
 		}
 
 		
-		public void LoadFromCollectionFile(string collectionPath)
-		{
-			this.Clear();
-            _liftDom = new XmlDocument();
-		    string projectPath = Directory.GetParent(collectionPath).Parent.Parent.FullName;
-		    string projectName = Path.GetFileName(projectPath);         //TODO: this isn't guaranteed to work
-		    string imageDirectory = Path.Combine(projectPath, "pictures"); 
-		    string audioDirectory = Path.Combine(projectPath, "audio"); 
-		    string liftPath = Path.Combine(projectPath, projectName + ".lift"); 
-            if(!File.Exists(liftPath))
-            {
-                MessageBox.Show("could not find a lift file at " + liftPath);
-                return;
-            }
-		    _liftDom.Load(liftPath);
+		
 
-		    string[] words = File.ReadAllLines(collectionPath);
-		    foreach (var word in words)
-		    {
-		        var entryNodes = _liftDom.SelectNodes(string.Format("lift/entry[lexical-unit/form/text='{0}']", word.Trim()));
+
+	 
+
+
+//	    //
+//		// If Path returns an empty string, the shortcut is associated with
+//		// a PIDL instead, which can be retrieved with IShellLink.GetIDList().
+//		// This is beyond the scope of this wrapper class.
+//		//
+//		/// <value>
+//		///   Gets or sets the target path of the shortcut.
+//		/// </value>
+//		private static string DereferenceShortcut(string link)
+//		{  
+//			ShellLink.IShellLinkW shellLink = (ShellLink.IShellLinkW) new ShellLink.ShellLink();
+//
+//			const int MAX_PATH = 260;
+//
+//			StringBuilder sb = new StringBuilder( MAX_PATH );
+//			try
+//			{
+//				ShellLink.IPersistFile pf = (ShellLink.IPersistFile)shellLink;
+//				pf.Load( link, 0 );
+//				ShellLink.WIN32_FIND_DATAW wfd = new ShellLink.WIN32_FIND_DATAW();
+//				shellLink.GetPath( sb, sb.Capacity, out wfd, ShellLink.SLGP_FLAGS.SLGP_UNCPRIORITY );
+//			}
+//			finally
+//			{
+//				System.Runtime.InteropServices.Marshal.ReleaseComObject( shellLink );
+//			}
+//			return sb.ToString();
+//		}
+
+        public void LoadFromCollectionFile(string collectionPath)
+        {
+            string[] words = File.ReadAllLines(collectionPath);
+            foreach (var word in words)
+            {
+                var entry = _liftProject.GetEntryFromWord(word);
                 //todo: what if we don't find it?
 
-                if(entryNodes.Count > 0)
-                {
-                    //todo: what if there is more than one?
-                    string imagePath = GetImagePath(imageDirectory, entryNodes[0]);
-                    string soundPath = GetSoundPath(audioDirectory, entryNodes[0]);
-                    string gloss = GetGloss(entryNodes[0]);
+                     //todo: what if there is more than one?
+                string imagePath = entry.ImagePath;
+                string soundPath = entry.SoundPath;
+                string gloss = entry.Gloss;
 
-		            var utterance = new Utterance(word, gloss, soundPath, imagePath);
-			        this.Add(utterance);
-                }
-		    }
-		}
-
-	    private string GetGloss(XmlNode entryNode)
-	    {
-            var glossNode = entryNode.SelectSingleNode("sense/definition/form/text");
-            if(glossNode != null)
-            {
-                var name =glossNode.InnerText;
-                if(name!=null)
-                {
-                    return name;
-                }
+                var utterance = new Utterance(word, gloss, soundPath, imagePath);
+                Add(utterance);
             }
-	        return "?";
         }
 
-	    private string GetImagePath(string imageDirectory, XmlNode entryNode)
+        public void Load(SvgMapReader svg)
 	    {
-            if(!Directory.Exists(imageDirectory))
-                return null;
-
-            var imageNode = entryNode.SelectSingleNode("sense/illustration");
-            if(imageNode != null)
+            foreach(string hitRegionId in svg.GetRegionIds())
             {
-                var name =imageNode.Attributes.GetNamedItem("href");
-                if(name!=null)
-                {
-                    return Path.Combine(imageDirectory, name.Value);
-                }
+                var entry= _liftProject.GetEntryFromHitRegionId(hitRegionId);
+                
+                var utterance = new Utterance("??", entry.Gloss,entry.SoundPath, entry.ImagePath);
+                Add(utterance);
             }
-	        return null;	   
-        }
-
-	    private string GetSoundPath(string audioDirectory, XmlNode entryNode)
-	    {
-            if (!Directory.Exists(audioDirectory))
-                return null;
-
-            var audioNode = entryNode.SelectSingleNode("lexical-unit/form[@lang='voice']/text");
-            if(audioNode != null)
-            {
-                return Path.Combine(audioDirectory,audioNode.InnerText);
-            }
-	        return null;
 	    }
 
-
-	    //
-		// If Path returns an empty string, the shortcut is associated with
-		// a PIDL instead, which can be retrieved with IShellLink.GetIDList().
-		// This is beyond the scope of this wrapper class.
-		//
-		/// <value>
-		///   Gets or sets the target path of the shortcut.
-		/// </value>
-		private static string DereferenceShortcut(string link)
-		{  
-			ShellLink.IShellLinkW shellLink = (ShellLink.IShellLinkW) new ShellLink.ShellLink();
-
-			const int MAX_PATH = 260;
-
-			StringBuilder sb = new StringBuilder( MAX_PATH );
-			try
-			{
-				ShellLink.IPersistFile pf = (ShellLink.IPersistFile)shellLink;
-				pf.Load( link, 0 );
-				ShellLink.WIN32_FIND_DATAW wfd = new ShellLink.WIN32_FIND_DATAW();
-				shellLink.GetPath( sb, sb.Capacity, out wfd, ShellLink.SLGP_FLAGS.SLGP_UNCPRIORITY );
-			}
-			finally
-			{
-				System.Runtime.InteropServices.Marshal.ReleaseComObject( shellLink );
-			}
-			return sb.ToString();
-		}	
+   
 	}
 }

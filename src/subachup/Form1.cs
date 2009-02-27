@@ -7,7 +7,9 @@ using System.Data;
 using System.IO;
 using System.Diagnostics;
 using System.Text;
+using subachup;
 using Subachup.Core;
+using subachup.Properties;
 
 
 namespace Subachup
@@ -229,22 +231,26 @@ namespace Subachup
 		{
 			_propertyTable.RestoreFromFile(null);
 
-			if(Directory.Exists(LastUsedPlayListPath))
+            if (File.Exists(Settings.Default.PreviousFile))
 			{
-				UseGroupFile(LastUsedPlayListPath, false);
+				OpenFile(Settings.Default.PreviousFile);
 			}
 
-			UtteranceCollection.CurrentUtteranceSet.LoadUserStuff();
+			//UtteranceCollection.CurrentUtteranceSet.LoadUserStuff();
 
+//
+//             AddTab(new ListenControl(_propertyTable), "Listen");
+//           AddTab(new RecognitionQuizControl(_propertyTable), "Comprehension Quiz");
+//          //  AddTab(new GatherTab(_propertyTable), "Gather");
+//
+//            _previousPage = _modeControl.SelectedTab;
+//            if (_modeControl.SelectedTab != null)
+//                CurrentSubachupControl.Showing();
 
-             AddTab(new ListenControl(_propertyTable), "Listen");
-           AddTab(new RecognitionQuizControl(_propertyTable), "Comprehension Quiz");
-          //  AddTab(new GatherTab(_propertyTable), "Gather");
-
-            _previousPage = _modeControl.SelectedTab;
-            if (_modeControl.SelectedTab != null)
-                CurrentSubachupControl.Showing();
-
+            if(!string.IsNullOrEmpty(Settings.Default.PreviousFile) && File.Exists(Settings.Default.PreviousFile))
+            {
+              //  UseGroupFile(Settings.Default.PreviousFile, true);	
+            }
 		}
 
 
@@ -270,20 +276,6 @@ namespace Subachup
         }
 
 
-		private void UseGroupFile(string collectionFilePath,bool doRemember)
-		{
-			if(doRemember)
-                PreviousCollectionFile =  collectionFilePath;
-			if(!System.IO.File.Exists(collectionFilePath))
-				return;
-
-			UtteranceCollection.CurrentUtteranceSet.LoadFromCollectionFile(collectionFilePath);
-
-			mruHandler1.AddRecentlyUsedFile(collectionFilePath);
-			UpdateWindowCaption();
-
-            UtteranceCollection.CurrentUtteranceSet.DidChange();
-		}
 
         private SubachupTabControl CurrentSubachupControl
         {
@@ -307,15 +299,18 @@ namespace Subachup
 			if(!File.Exists(e.File))
 			{
 				//TODO: add this ability mruHandler1.RemoveFile(e.File);
+			    MessageBox.Show("Count not find " + e.File);
 			}
 			else
-				UseGroupFile(e.File, true);		
+                OpenFile(e.File);		
 		}
 
 
 		private void OnChooseFile(object sender, System.EventArgs e)
 		{
 		    OpenFileDialog dialog = new OpenFileDialog();
+		    dialog.Filter = "Subachup practice files (*.txt; *.svg)|*.txt;*.svg";
+
 			//try to start at the parent of the current file
 			if(PreviousCollectionFile != null && File.Exists(PreviousCollectionFile))
 			{
@@ -325,11 +320,83 @@ namespace Subachup
 			if(DialogResult.OK != dialog.ShowDialog())
 				return;
 
-			UseGroupFile( dialog.FileName, true);	
+		    string path = dialog.FileName;
+		    OpenFile(path);
+
 		}
 
-   
-		private void Form1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+	    private void OpenFile(string path)
+	    {
+	        switch(Path.GetExtension(path))
+	        {
+	            case ".txt":
+	                UseGroupFile(path, true);
+	                break;
+	            case ".svg":
+	                UseImageMapFile(path);
+	                break;
+	            default:
+	                break;
+	        }
+	    }
+
+
+	    private void UseGroupFile(string collectionFilePath, bool doRemember)
+        {
+            if (doRemember)
+                PreviousCollectionFile = collectionFilePath;
+            if (!System.IO.File.Exists(collectionFilePath))
+                return;
+
+                        LiftProject project = new LiftProject();
+            project.LoadFromSubachupDataDir(collectionFilePath);
+
+            UtteranceCollection.CurrentUtteranceSet = new UtteranceCollection(project);
+            UtteranceCollection.CurrentUtteranceSet.LoadFromCollectionFile(collectionFilePath);
+
+            mruHandler1.AddRecentlyUsedFile(collectionFilePath);
+            UpdateWindowCaption();
+
+
+            Settings.Default.PreviousFile = collectionFilePath;
+
+
+            _modeControl.TabPages.Clear();
+            AddTab(new ListenControl(_propertyTable), "Listen");
+            AddTab(new RecognitionQuizControl(_propertyTable), "Comprehension Quiz");
+            //  AddTab(new GatherTab(_propertyTable), "Gather");
+
+            _previousPage = _modeControl.SelectedTab;
+            if (_modeControl.SelectedTab != null)
+                CurrentSubachupControl.Showing();
+
+            UtteranceCollection.CurrentUtteranceSet.DidChange();
+        }
+
+        private void UseImageMapFile(string path)
+	    {
+            if (!System.IO.File.Exists(path))
+                return;
+
+            mruHandler1.AddRecentlyUsedFile(path);
+            UpdateWindowCaption();
+
+            Settings.Default.PreviousFile = path;
+
+            _modeControl.TabPages.Clear();
+            LiftProject project = new LiftProject();
+            project.LoadFromSubachupDataDir(path);
+            AddTab(new ImageMapDrillControl(path, project), "Practice");
+
+            _previousPage = _modeControl.SelectedTab;
+            if (_modeControl.SelectedTab != null)
+                CurrentSubachupControl.Showing();
+
+           // UtteranceCollection.CurrentUtteranceSet.DidChange();
+	    }
+
+
+	    private void Form1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
             //foreach(TabPage page in _modeControl.TabPages)
             //{
@@ -338,9 +405,10 @@ namespace Subachup
             //}
             SubachupTabControl tab = (SubachupTabControl)_previousPage.Tag;
             tab.Hiding();
-			UtteranceCollection.CurrentUtteranceSet.SavePlayList(LastUsedPlayListPath);
-			UtteranceCollection.CurrentUtteranceSet.SaveUserStuff();
+//			UtteranceCollection.CurrentUtteranceSet.SavePlayList(LastUsedPlayListPath);
+//			UtteranceCollection.CurrentUtteranceSet.SaveUserStuff();
 			_propertyTable.Save(null,null);
+		    Settings.Default.Save();
 		}
 
 		private string LastUsedPlayListPath
@@ -353,9 +421,11 @@ namespace Subachup
 
 		private void _modeControl_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			//save the score stuff
-			UtteranceCollection.CurrentUtteranceSet.SaveUserStuff();
-
+            if (UtteranceCollection.CurrentUtteranceSet != null)
+            {
+                //save the score stuff
+                UtteranceCollection.CurrentUtteranceSet.SaveUserStuff();
+            }
             if (_previousPage != null)
             {
                 SubachupTabControl tab = (SubachupTabControl)_previousPage.Tag;
@@ -373,7 +443,7 @@ namespace Subachup
 
 
             //tell the new guy to update
-            if (_previousPage.Tag is SubachupTabControl)
+            if (_previousPage !=null && _previousPage.Tag is SubachupTabControl)
                 ((SubachupTabControl)_previousPage.Tag).Showing();
 		}
 

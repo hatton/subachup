@@ -29,7 +29,7 @@ namespace Subachup
             InitializeComponent();
             this.components = new System.ComponentModel.Container(); //don't know why designer didn't add that
             _propertyTable = propertyTable;
-            UtteranceCollection.CurrentUtteranceSet.Changed += new EventHandler(CurrentUtteranceSet_Changed);
+           // UtteranceCollection.CurrentUtteranceSet.Changed += new EventHandler(CurrentUtteranceSet_Changed);
 
         }
 
@@ -50,7 +50,20 @@ namespace Subachup
 
         private void SetupPlayer()
         {
-            this._player = new nBASS.BASS(this.components);
+            if(DesignMode)
+                return;
+
+            try
+            {
+                this._player = new nBASS.BASS(this.components);
+            }
+            catch(Exception error)
+            {
+                MessageBox.Show("Could not start nbass player");
+                Application.Exit();
+            }
+
+
             ((System.ComponentModel.ISupportInitialize)(this._player)).BeginInit();
 
             this._player.Device = "Default";
@@ -85,7 +98,7 @@ namespace Subachup
                 Reload();
                 _pendingCurrentSetChangedEvent = false;
             }
-            UtteranceCollection.CurrentUtteranceSet.Changed += new EventHandler(CurrentUtteranceSet_Changed2);
+          //  UtteranceCollection.CurrentUtteranceSet.Changed += new EventHandler(CurrentUtteranceSet_Changed2);
 		}
 
         void CurrentUtteranceSet_Changed2(object sender, EventArgs e)
@@ -96,7 +109,7 @@ namespace Subachup
 
         public virtual bool Hiding()
 		{
-            UtteranceCollection.CurrentUtteranceSet.Changed -= new EventHandler(CurrentUtteranceSet_Changed2);
+         //   UtteranceCollection.CurrentUtteranceSet.Changed -= new EventHandler(CurrentUtteranceSet_Changed2);
 			return true;
 		}
 

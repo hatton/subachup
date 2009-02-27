@@ -31,6 +31,8 @@ namespace Subachup
 		protected bool _checked=false;
 		protected nBASS.Stream _sound;
 		protected nBASS.BASS _player;
+
+	    public Rectangle HitRectangle{ get; set;}
 	
 		//		protected string _contrastGroup;
 		
