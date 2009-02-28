@@ -17,16 +17,32 @@ namespace Subachup
 		public string _utteranceKey;
 	}
 
-	/// <summary>
+    public interface IQuizItem
+    {
+        string IdOfLiftEntry { get; set; }
+
+        [NormallyReadOnly]
+        int Score { get; set; }
+
+        [NormallyReadOnly, ForIndividualUser]
+        int CorrectWithoutMistakesCount { get; set; }
+
+        [NormallyReadOnly, ForIndividualUser]
+        DateTime LastQuizzedDate { get; set; }
+    }
+
+    /// <summary>
 	/// Summary description for Utterance.
 	/// </summary>
-	public class Utterance
-	{
+	public class Utterance : IQuizItem
+    {
 	    protected UtteranceHistory _userHistory;
 		//protected com.db4o.ext.Db4oUUID _userHistoryId;
 
 		protected HundredMilesSoftware.UltraID3Lib.UltraID3 _id3;
 		protected int _score;
+
+        public string IdOfLiftEntry { get; set; }
 
 		protected bool _checked=false;
 		protected nBASS.Stream _sound;
@@ -448,8 +464,9 @@ namespace Subachup
 				_checked = value;
 			}
 		}
-		
-		
+
+
+
 //		private string GetMatchingImagePath()
 //		{
 //            if (!Directory.Exists(ImagesDirectory))

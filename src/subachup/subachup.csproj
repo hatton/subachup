@@ -46,6 +46,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\GlacialList.dll</HintPath>
     </Reference>
+    <Reference Include="LinqBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c2b14eb747628076, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\LinqBridge.dll</HintPath>
+    </Reference>
     <Reference Include="MostRecentlyUsedHandler, Version=1.0.2292.42656, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\MostRecentlyUsedHandler.dll</HintPath>
@@ -66,27 +70,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="QuestionChooser.cs" />
     <Compile Include="utility\DelegateDefinitions.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="utility\GenericEventArgs.cs" />
-    <Compile Include="HitRegion.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="HitRegion.Designer.cs">
-      <DependentUpon>HitRegion.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ImageMapBox.cs">
+    <Compile Include="ImageMap\ImageMapBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ImageMapBox.Designer.cs">
+    <Compile Include="ImageMap\ImageMapBox.Designer.cs">
       <DependentUpon>ImageMapBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageMapDrillControl.cs">
+    <Compile Include="ImageMap\ImageMapDrillControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ImageMapDrillControl.Designer.cs">
+    <Compile Include="ImageMap\ImageMapDrillControl.Designer.cs">
       <DependentUpon>ImageMapDrillControl.cs</DependentUpon>
     </Compile>
     <Compile Include="LiftProject.cs" />
@@ -101,10 +100,10 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ImageMapBox.resx">
+    <EmbeddedResource Include="ImageMap\ImageMapBox.resx">
       <DependentUpon>ImageMapBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ImageMapDrillControl.resx">
+    <EmbeddedResource Include="ImageMap\ImageMapDrillControl.resx">
       <DependentUpon>ImageMapDrillControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="stuffFromPrototype\GatherTab.resx">
@@ -169,7 +168,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SubachupTabControl.Designer.cs" />
-    <Compile Include="SvgMapReader.cs" />
+    <Compile Include="ImageMap\SvgMapReader.cs" />
     <Compile Include="utility\XmlUtils.cs" />
     <Compile Include="Utterance.cs" />
     <Compile Include="UtteranceCollection.cs" />

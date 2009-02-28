@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System. Text;
 using System.IO;
 using System.Collections;
@@ -12,7 +13,7 @@ namespace Subachup
 	/// <summary>
 	/// Summary description for UtteranceCollection.
 	/// </summary>
-	public class UtteranceCollection: ArrayList
+	public class UtteranceCollection: List<IQuizItem>
 	{
 	    private readonly LiftProject _liftProject;
 	    protected  static UtteranceCollection _currentUtteranceSet;
@@ -189,6 +190,7 @@ namespace Subachup
                 string gloss = entry.Gloss;
 
                 var utterance = new Utterance(word, gloss, soundPath, imagePath);
+                utterance.IdOfLiftEntry = entry.Id;
                 Add(utterance);
             }
         }

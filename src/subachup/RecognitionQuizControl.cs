@@ -5,10 +5,11 @@ namespace Subachup
 {
     public partial class RecognitionQuizControl : SubachupTabControl
     {
-        protected int _audioIndex;
         protected bool _readyForNext = false;
         private QuizState _quizState = QuizState.Stopped;
         private enum QuizState { Stopped, Paused, Playing };
+        private QuestionChooser _questionChooser;
+        private IQuizItem _currentQuizItem;
 
         public RecognitionQuizControl()
         {
@@ -20,7 +21,7 @@ namespace Subachup
             :base(propertyTable)
         {
             InitializeComponent();
- 
+            _questionChooser = new QuestionChooser(UtteranceCollection.CurrentUtteranceSet);
         }
 
         private void RecognitionQuizControl_Load(object sender, EventArgs e)
@@ -52,78 +53,11 @@ namespace Subachup
 
 
 
-		protected int[] RandomizeVisitOrder(int[] input)
-		{
-			int[] output = new int[input.Length];
-			for( int j = 0; j < output.Length; j++ )
-			{
-				output[j]=-1;
-			}
-
-			Random rnd = new Random();
-			int count = 0;
-
-			while( count < output.Length )
-			{
-				int destination = rnd.Next( 0, output.Length );
-
-				if( output[destination] == -1 )
-				{
-					output[destination] = count;
-					count++;
-				}
-			}
-			return output;
-		}
-		protected int PickNextWord()
-		{
-			Random rnd = new Random();
-			//int pick = rnd.Next( 0, _audioFiles.Length );
-			double howRandom= (10-_focus.Value); //0 to 10
-			int best=-1;
-			double lowScore=100000;
-			int[] scores =MakeScoresArray();
-			int[] visit=RandomizeVisitOrder(scores);
-			for(int i=0;i<visit.Length;i++)
-			{
-				int whichAudio = visit[i];
-
-				double randomizer=0.5-rnd.NextDouble(); // centered around 0
-				randomizer =randomizer * howRandom; //spread out around 0 (-5 to 5?)
-				double score =  randomizer + (scores[whichAudio]);
-				
-				//todo need something to favor those we haven't even tested
-				//score += _correctCount[whichAudio]*.1;
-				
-				//				System.Diagnostics.Debug.WriteLine(_scores[whichAudio]+" "+score+" "+_audioFiles[whichAudio]);
-				if(whichAudio == _audioIndex)
-					score = 100; //very unlikely, but won't break if only one item in the quiz
-				if (score <lowScore)
-				{
-					lowScore = score;
-					best =whichAudio;
-				}
-			}
-			//			System.Diagnostics.Debug.WriteLine("Chose "+ _audioFiles[best]);
-			return best;
-		}
-
-
-
-		private int[] MakeScoresArray()
-		{
-			int[] scores = new int[UtteranceCollection.CurrentUtteranceSet.Count];
-
-			for(int i=0; i< UtteranceCollection.CurrentUtteranceSet.Count;i++)
-			{
-				scores[i] = ((Utterance)UtteranceCollection.CurrentUtteranceSet[i]).Score;
-			}
-			return scores;
-		}
+	
 
 		private void UpdateDisplay ()
 		{
-			_statusDisplay.Scores = MakeScoresArray();
+			_statusDisplay.Scores = _questionChooser.MakeScoresArray();
 			this.Refresh();//
 		}
 
@@ -134,8 +68,8 @@ namespace Subachup
 			{
 				if(UtteranceCollection.CurrentUtteranceSet !=null && UtteranceCollection.CurrentUtteranceSet.Count>0 && _readyForNext)
 				{
-					_audioIndex = PickNextWord();
-					QuizOne((Utterance)UtteranceCollection.CurrentUtteranceSet[_audioIndex]);
+				    _currentQuizItem = _questionChooser.PickNextQuizItem();
+					QuizOne((Utterance)_currentQuizItem);
 				}	
 				if(_sound !=null)
 					_sound.Play(true, nBASS.StreamPlayFlags.Default);		
@@ -152,7 +86,7 @@ namespace Subachup
 			}
 			else
 			{
-				_audioIndex =-1;
+                _currentQuizItem = null;
 				_readyForNext=true;
 				timer1.Enabled=true;
 				CurrentQuizState = QuizState.Playing;
@@ -170,43 +104,24 @@ namespace Subachup
 			if(!timer1.Enabled)
 				return;//not playing
 
-			//			if(e. == MouseButtons.Right)
-			//				return;
 
 			ListViewItem item =_utteranceImageGrid.Grid.SelectedItems[0];
 			Utterance utterance = (Utterance)item.Tag;
 
-			if (utterance ==CurrentUtterance)
-			{
-				++utterance.Score;
-				++utterance.CorrectWithoutMistakesCount;
-
-				//_utteranceImageGrid.Grid..BackColor= System.Drawing.Color.Green;
-				_readyForNext=true; //++_audioIndex;
-				//_progress.Value++;
-				_correctSound.Play(true, nBASS.StreamPlayFlags.Default);		
-			}
-			else
-			{
-				CurrentUtterance.CorrectWithoutMistakesCount=0;
-				CurrentUtterance.Score=-2; //-=2;//you'll get one back when you click it right
-				//also decrement the score of the one we mistakenly clicked on
-				utterance.CorrectWithoutMistakesCount=0;
-				utterance.Score=-1;
-
-				//_utteranceImageGrid.Grid..BackColor= System.Drawing.Color.Red;
-				_wrongSound.Play(true, nBASS.StreamPlayFlags.Default);		
-			}
-
-			CurrentUtterance.LastQuizzedDate = DateTime.Now;
+            if (_questionChooser.GaveAnswer(utterance))
+            {
+                _readyForNext = true;
+                _correctSound.Play(true, nBASS.StreamPlayFlags.Default);
+            }
+            else
+            {
+                 _wrongSound.Play(true, nBASS.StreamPlayFlags.Default);
+            }
 
 			UpdateDisplay();
 		}
 
-		private Utterance CurrentUtterance
-		{
-			get{return ((Utterance)UtteranceCollection.CurrentUtteranceSet[_audioIndex]);}
-		}
+
 
 
 		private void btnPause_Click(object sender, System.EventArgs e)
@@ -223,7 +138,7 @@ namespace Subachup
 		{
 			timer1.Enabled=false;
 			_readyForNext=false;
-			_audioIndex=-1;
+			_currentQuizItem=null;
 			
 			if(_sound !=null)
 				_sound.Stop();
@@ -253,19 +168,17 @@ namespace Subachup
 
         private void btnShowMe_Click(object sender, EventArgs e)
         {
-            if (_audioIndex < 0)
+            if (_currentQuizItem ==null)
                 return;
 
-            CurrentUtterance.Score = -1;
-            Utterance u = (Utterance)UtteranceCollection.CurrentUtteranceSet[_audioIndex];
-            _utteranceImageGrid.PointOutUtterance(u);
-//            _utteranceImageGrid.PointOutUtterance(_audioIndex);
+            _currentQuizItem.Score = -1; // if you had to ask, we figure you don't know
+            _utteranceImageGrid.PointOutUtterance((Utterance)_currentQuizItem);
         }
 
 
         public override void Reload()
         {
-            _audioIndex = 0;
+            _currentQuizItem = _questionChooser.PickNextQuizItem();//review
             _utteranceImageGrid.LoadGrid();
             _utteranceImageGrid.Shuffle();
             UpdateButtons();
