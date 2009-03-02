@@ -106,6 +106,11 @@ namespace subachup
             }
         }
 
+        public IEnumerable<IQuizItem> QuizItems
+        {
+            get { return _quizItems; }
+        }
+
 
         public void PlayClicked()
         {

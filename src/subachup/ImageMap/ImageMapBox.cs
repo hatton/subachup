@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -18,6 +19,7 @@ namespace subachup
         public event subachup.utility.Proc<IEnumerable<string>> ClickedInOneOrMoreRegions;
         public event subachup.utility.Proc ClickedOutsideRegionAllRegions;
         public event Proc<IEnumerable<IQuizItem>> GaveAnAnswer;
+        public IEnumerable<IQuizItem> QuizItems{get; set;}      
 
         BigMansStuff.LocusEffects.LocusEffectsProvider _locusEffectsProvider;
         private IEnumerable<IQuizItem> _quizItems;
@@ -133,7 +135,7 @@ namespace subachup
 //                }
 //            }
 //        }
-        public void LoadContents()
+        public void LoadContents()//IEnumerable<IQuizItem> choices)
         {
         }
 

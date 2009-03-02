@@ -9,8 +9,10 @@ namespace subachup
     public interface IAnswersControl
     {
         event Proc<IEnumerable<IQuizItem>> GaveAnAnswer;
-        void LoadContents();
+        IEnumerable<IQuizItem> QuizItems { get; set; }
+        void LoadContents();//IEnumerable<IQuizItem> choices);
         void PointOutUtterance(Utterance utterance);
+        
     }
 
     public partial class RecognitionQuizControl : SubachupTabControl
@@ -54,7 +56,7 @@ namespace subachup
         private void RecognitionQuizControl_Load(object sender, EventArgs e)
         {
             _focus.Value = _propertyTable.GetIntProperty("focus", 7);
-
+            _answersControl.QuizItems = _presentationModel.QuizItems;
             Reload();
         }
 

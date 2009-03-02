@@ -13,10 +13,9 @@ namespace subachup.Core
     {
         public event System.EventHandler Clicked;
         public event Proc<IEnumerable<IQuizItem>> GaveAnAnswer;
-        private IEnumerable<IQuizItem> _currentUtterances;
-        public UtteranceImageGrid(IEnumerable<IQuizItem> currentUtterances):this()
+        public IEnumerable<IQuizItem> QuizItems
         {
-            CurrentUtterances = currentUtterances;
+            get; set;
         }
 
         public UtteranceImageGrid()
@@ -57,7 +56,7 @@ namespace subachup.Core
             _imageGrid.SuspendLayout();
             _imageList.Images.Clear();
             _imageGrid.Items.Clear();
-            foreach (Utterance utterance in CurrentUtterances)
+            foreach (Utterance utterance in QuizItems)
             {
                 if (utterance != null)//hack... bug in there
                     AddImageItem(utterance);
@@ -180,11 +179,6 @@ namespace subachup.Core
             }
         }
 
-        public IEnumerable<IQuizItem> CurrentUtterances
-        {
-            get { return _currentUtterances; }
-            set { _currentUtterances = value; }
-        }
 
 //        private void handleFileDropTimer_Tick(object sender, System.EventArgs e)
 //        {

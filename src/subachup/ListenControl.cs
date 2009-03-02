@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace subachup
@@ -18,19 +20,17 @@ namespace subachup
         {
             _soundPlayer = new SoundPlayer(parentFormForPlayer);
             InitializeComponent();
-            _utteranceImageGrid.CurrentUtterances = quizItems;
+            _utteranceImageGrid.QuizItems = quizItems;
+            _utteranceImageGrid.GaveAnAnswer += new subachup.utility.Proc<IEnumerable<IQuizItem>>(OnGaveAnAnswer);
         }
 
-        private void _utteranceImageGrid_Clicked(object sender, EventArgs e)
+        void OnGaveAnAnswer(IEnumerable<IQuizItem> answers)
         {
-            if (_utteranceImageGrid.Grid.SelectedItems.Count ==0)
-                return;
-            ListViewItem item = _utteranceImageGrid.Grid.SelectedItems[0];
-            string path = ((Utterance)item.Tag).SoundPath;
+            Debug.Assert(answers.Count() == 1);
+            var u = (Utterance) answers.First();
             //nBASS.Stream sound = _player.LoadStream(ResolveSoundPath(path));
-            _soundPlayer.SetCurrentUtterance(path);
+            _soundPlayer.SetCurrentUtterance(u.SoundPath);
             _soundPlayer.PlayCurrentUtterace();
-            //sound.Play(true, nBASS.StreamPlayFlags.Default);		
         }
 
         private void ListenControl_Load(object sender, EventArgs e)
