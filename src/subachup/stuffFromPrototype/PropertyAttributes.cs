@@ -1,6 +1,6 @@
 using System;
 
-namespace Subachup
+namespace subachup
 {
 	#region Grid stuff
 

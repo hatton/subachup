@@ -1,6 +1,7 @@
-using Subachup.Core;
+using subachup.Core;
+using subachup.Core;
 
-namespace Subachup
+namespace subachup
 {
     partial class RecognitionQuizControl 
     {
@@ -39,9 +40,7 @@ namespace Subachup
             this._focus = new System.Windows.Forms.TrackBar();
             this.labelFocussed = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this._statusDisplay = new LQ.StatusDisplay();
-            this._utteranceImageGrid = new UtteranceImageGridNew();
             ((System.ComponentModel.ISupportInitialize)(this._focus)).BeginInit();
             this.SuspendLayout();
             // 
@@ -53,7 +52,7 @@ namespace Subachup
             this.btnShowMe.TabIndex = 26;
             this.btnShowMe.TabStop = true;
             this.btnShowMe.Text = "Show me";
-            this.btnShowMe.Click += new System.EventHandler(this.btnShowMe_Click);
+            this.btnShowMe.Click += new System.EventHandler(this.OnShowMeClicked);
             // 
             // btnStop
             // 
@@ -127,12 +126,7 @@ namespace Subachup
             this.label1.Size = new System.Drawing.Size(57, 20);
             this.label1.TabIndex = 27;
             this.label1.Text = "Focussed";
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
+             // 
             // _statusDisplay
             // 
             this._statusDisplay.Location = new System.Drawing.Point(0, 433);
@@ -140,25 +134,13 @@ namespace Subachup
             this._statusDisplay.Size = new System.Drawing.Size(251, 27);
             this._statusDisplay.TabIndex = 29;
             this._statusDisplay.Anchor=(System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Bottom );
-            // 
-            // _utteranceImageGrid
-            // 
-            this._utteranceImageGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this._utteranceImageGrid.BackColor = System.Drawing.SystemColors.Control;
-            this._utteranceImageGrid.Location = new System.Drawing.Point(1, 60);
-            this._utteranceImageGrid.Name = "_utteranceImageGrid";
-            this._utteranceImageGrid.Size = new System.Drawing.Size(796, 375);
-            this._utteranceImageGrid.TabIndex = 28;
-            this._utteranceImageGrid.Clicked += new System.EventHandler(this.utteranceImageGrid1_Clicked);
+
             // 
             // RecognitionQuizControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._statusDisplay);
-            this.Controls.Add(this._utteranceImageGrid);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnShowMe);
             this.Controls.Add(this.btnStop);
@@ -186,8 +168,6 @@ namespace Subachup
         private System.Windows.Forms.TrackBar _focus;
         private System.Windows.Forms.Label labelFocussed;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Timer timer1;
-        private UtteranceImageGridNew _utteranceImageGrid;
         private LQ.StatusDisplay _statusDisplay;
     }
 }

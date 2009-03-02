@@ -1,4 +1,4 @@
-namespace Subachup
+namespace subachup
 {
     partial class SubachupTabControl 
     {
@@ -35,7 +35,6 @@ namespace Subachup
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "SubachupTabControl";
-            this.Load += new System.EventHandler(this.SubachupTabControl_Load);
             this.ResumeLayout(false);
 
         }

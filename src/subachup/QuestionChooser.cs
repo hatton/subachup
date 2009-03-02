@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Subachup
+namespace subachup
 {
     /// <summary>
     /// This class handles giving a sequence questions, based on the student's past performance.
@@ -11,7 +11,7 @@ namespace Subachup
     public class QuestionChooser
     {
         public IQuizItem CurrentQuizItem { get; set; }
-        private readonly List<IQuizItem> _quizItems;
+        private readonly IEnumerable<IQuizItem> _quizItems;
 
         /// <summary>
         /// 0-10.  How "focussed" vs. random the quizing should be.  That is, how much should it drill on past errors.
@@ -24,7 +24,7 @@ namespace Subachup
         protected int _indexOfCurrentQuestion;
 
 
-        public QuestionChooser(List<IQuizItem> quizItems)
+        public QuestionChooser(IEnumerable<IQuizItem> quizItems)
         {
             _quizItems = quizItems;
         }
@@ -79,17 +79,21 @@ namespace Subachup
                     best = index;
                 }
             }
-            CurrentQuizItem = _quizItems[best];
+            _indexOfCurrentQuestion = best;
+            CurrentQuizItem = _quizItems.ToArray()[best];
             return CurrentQuizItem;
         }
 
 
         public int[] MakeScoresArray()
         {
-            int[] scores = new int[_quizItems.Count];
-            for (int i = 0; i < _quizItems.Count    ; i++)
+            var count = _quizItems.Count();
+            if (count == 0)
+                throw new ApplicationException("There were no quiz items.");
+            int[] scores = new int[count];
+            for (int i = 0; i < _quizItems.Count()    ; i++)
             {
-                scores[i] = _quizItems[i].Score;
+                scores[i] = _quizItems.ToArray()[i].Score;
             }
             return scores;
         }
@@ -97,11 +101,11 @@ namespace Subachup
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>true if it was the right answer</returns>
-        public bool GaveAnswer(IQuizItem answer)
+        /// <returns>true if it contained the right answer</returns>
+        public bool GaveAnswer(IEnumerable<IQuizItem> usersAnswers)
         {
             CurrentQuizItem.LastQuizzedDate = DateTime.Now;
-            if (answer == CurrentQuizItem)
+            if (usersAnswers.Contains(CurrentQuizItem))
             {
                 ++CurrentQuizItem.Score;
                 ++CurrentQuizItem.CorrectWithoutMistakesCount;
@@ -113,8 +117,16 @@ namespace Subachup
                CurrentQuizItem.CorrectWithoutMistakesCount = 0;
                 CurrentQuizItem.Score = -2; //-=2;//you'll get one back when you click it right
                 //also decrement the score of the one we mistakenly clicked on
-                answer.CorrectWithoutMistakesCount = 0;
-                answer.Score = -1;
+                
+                
+                //NB: this logic doesn't really work for the case where the user's click
+                //is ambigous... review: maybe this penalization doesn't even make sense for image maps?
+                //for now, we just don't penalize if there was more than one region at the point of the click
+                if (usersAnswers.Count() == 1)
+                {
+                    usersAnswers.First().CorrectWithoutMistakesCount = 0;
+                    usersAnswers.First().Score = -1;
+                }
                 return false;
             }
         }

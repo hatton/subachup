@@ -39,7 +39,9 @@ namespace subachup.tests
         [Test]
         public void  GetRegion_FindsRect()
         {
-            var rect = _svgReader.GetRegion("kidHoldingHands");
+            var rects = _svgReader.GetRectsForUtterance("kidHoldingHands");
+            Assert.AreEqual(1, rects.Count());
+            var rect = rects.First();
             Assert.AreEqual(117, rect.Width);
             Assert.AreEqual(171, rect.Height);
             Assert.AreEqual(267,    rect.Left);

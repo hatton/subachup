@@ -7,7 +7,7 @@ using System. Text;
 using System.Diagnostics;
 using HundredMilesSoftware.UltraID3Lib;
 
-namespace Subachup
+namespace subachup
 {
 	public class UtteranceHistory
 	{
@@ -29,6 +29,8 @@ namespace Subachup
 
         [NormallyReadOnly, ForIndividualUser]
         DateTime LastQuizzedDate { get; set; }
+
+        string SubachupRegion { get; set; }
     }
 
     /// <summary>
@@ -274,7 +276,9 @@ namespace Subachup
 			}
 		}
 
-		public int DurationSeconds
+        public string SubachupRegion { get; set;}
+
+        public int DurationSeconds
 		{
 			get
 			{

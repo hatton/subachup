@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Subachup
+namespace subachup
 {
 	/// <summary>
 	/// Summary description for ShellHelper.

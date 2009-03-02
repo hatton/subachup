@@ -71,6 +71,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="QuestionChooser.cs" />
+    <Compile Include="QuizPresentationModel.cs" />
+    <Compile Include="sound\SoundPlayer.cs" />
     <Compile Include="utility\DelegateDefinitions.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -132,8 +134,8 @@
     <EmbeddedResource Include="SubachupTabControl.resx">
       <DependentUpon>SubachupTabControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UtteranceImageGridNew.resx">
-      <DependentUpon>UtteranceImageGridNew.cs</DependentUpon>
+    <EmbeddedResource Include="UtteranceImageGrid.resx">
+      <DependentUpon>UtteranceImageGrid.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -172,25 +174,25 @@
     <Compile Include="utility\XmlUtils.cs" />
     <Compile Include="Utterance.cs" />
     <Compile Include="UtteranceCollection.cs" />
-    <Compile Include="UtteranceImageGridNew.cs">
+    <Compile Include="UtteranceImageGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UtteranceImageGridNew.Designer.cs">
-      <DependentUpon>UtteranceImageGridNew.cs</DependentUpon>
+    <Compile Include="UtteranceImageGrid.Designer.cs">
+      <DependentUpon>UtteranceImageGrid.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="bass.dll">
+    <Resource Include="sound\bass.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="basswma.dll">
+    <Resource Include="sound\basswma.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="correct.wav">
+    <Content Include="sound\correct.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="subachup.ico" />
-    <Content Include="wrong.wav">
+    <Content Include="sound\wrong.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

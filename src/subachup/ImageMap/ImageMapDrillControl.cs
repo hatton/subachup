@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-using Subachup;
+using subachup;
 
 namespace subachup
 {
@@ -41,7 +41,7 @@ namespace subachup
 
         private void ImageMapDrillControl_Load(object sender, EventArgs e)
         {
-            _imageBox.SetMap(_map);
+            _imageBox.Init(_map, _utterances);
         }
 
         private void _imageBox_MouseClick(object sender, MouseEventArgs e)

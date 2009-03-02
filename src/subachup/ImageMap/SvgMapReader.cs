@@ -41,26 +41,46 @@ namespace subachup
             return _mapDom.SelectSingleNode("x:svg/x:g/x:image", _nameSpaceManager);
         }
 
-        public int ImageWidth{ get; private set;}
-    
+        public int ImageWidth { get; private set; }
+
         public IEnumerable<string> GetRegionIds()
         {
             XmlNodeList nodes = _mapDom.SelectNodes("x:svg/x:g/x:rect", _nameSpaceManager);
-            if(nodes==null)
+            if (nodes == null)
                 yield return null; //review
-           
-           
+
+
             foreach (XmlNode node in nodes)
             {
-                yield return node.Attributes.GetNamedItem("id").Value;
+                string id = GetTrimmedIdFromNode(node);
+
+                yield return id;
             }
         }
 
-        public Rectangle GetRegion(string id)
+        private string GetTrimmedIdFromNode(XmlNode node)
         {
-            var node = _mapDom.SelectSingleNode(string.Format("x:svg/x:g/x:rect[@id='{0}']", id), _nameSpaceManager);
+//bit of a hack here... svg requires unique ids, but we're using ids to match utterances,
+            //and  there can be multiple hit regions for a single utterance(e.g. *2* kids not holding Mom's hand).
+            //So for now, we just add a number to the id in the svg program, and remove it here.
+            var id = node.Attributes.GetNamedItem("id").Value;
+            id = id.TrimEnd(new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9' });
+            return id;
+        }
+
+        public IEnumerable<Rectangle> GetRectsForUtterance(string id)
+        {
+            var nodes = _mapDom.SelectNodes(string.Format("x:svg/x:g/x:rect[contains(@id,id)]"), _nameSpaceManager);
+            foreach (XmlNode node in nodes)
+            {
+                yield return GetRectangleFromNode(node);
+            }
+        }
+
+        private Rectangle GetRectangleFromNode(XmlNode node)
+        {
             var x = GetIntAttribute(node, "x");
-            XmlNode imageNode= GetImageNode();
+            XmlNode imageNode = GetImageNode();
             x -= GetIntAttribute(imageNode, "x");
             var y = GetIntAttribute(node, "y");
             y -= GetIntAttribute(imageNode, "y");
@@ -69,7 +89,27 @@ namespace subachup
 
         private int GetIntAttribute(XmlNode node, string attr)
         {
-            return (int) double.Parse(node.Attributes.GetNamedItem(attr).Value);
+            return (int)double.Parse(node.Attributes.GetNamedItem(attr).Value);
+        }
+
+        public IEnumerable<string> GetIdsOfUtterancesInMap()
+        {
+            return GetRegionIds();
+        }
+
+        public IEnumerable<string> GetRegionIds(int x, int y)
+        {
+             var nodes = _mapDom.SelectNodes(string.Format("x:svg/x:g/x:rect[contains(@id,id)]"), _nameSpaceManager);
+            foreach (XmlNode node in nodes)
+            {
+                 var r =  GetRectangleFromNode(node);
+
+                  if (r.Contains(x, y))
+                {
+                    yield return GetTrimmedIdFromNode(node);
+                }
+            }
         }
     }
 }
+

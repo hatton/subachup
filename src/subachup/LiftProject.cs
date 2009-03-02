@@ -37,9 +37,12 @@ namespace subachup
 
     
 
-        public LexEntry GetEntryFromHitRegionId(string regionId)
+        public LexEntry GetEntryFromHitRegionId(string subachupRegionId)
         {
-           return new LexEntry(this, LiftDom.SelectNodes("lift/entry")[0]);
+            var entryNode = LiftDom.SelectSingleNode(string.Format("lift/entry[field[@type='SubachupRegion']/form/text='{0}']", subachupRegionId));
+            if(entryNode==null)
+                return null;
+            return new LexEntry(this, entryNode);
         }
 
         public LexEntry GetEntryFromWord(string word)
@@ -133,6 +136,17 @@ namespace subachup
                 }
                 return "?";
             }
-        }      
+        }
+
+        public string SubachupRegion
+        {
+            get 
+            {
+                var n = _entryNode.SelectSingleNode("field[@type='SubachupRegion']/form/text");
+                if(n==null)
+                    return string.Empty;
+                return n.InnerText;
+            }
+        }
     }
 }

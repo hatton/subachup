@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using nBASS;
 
-namespace Subachup
+namespace subachup
 {
     public partial class RecordTab : SubachupTabControl
     {

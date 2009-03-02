@@ -1,6 +1,6 @@
-﻿namespace Subachup.Core
+﻿namespace subachup.Core
 {
-    partial class UtteranceImageGridNew
+    partial class UtteranceImageGrid
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UtteranceImageGridNew));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UtteranceImageGrid));
             this._imageGrid = new System.Windows.Forms.ListView();
             this._imageList = new System.Windows.Forms.ImageList(this.components);
             this._locusEffectsProvider = new BigMansStuff.LocusEffects.LocusEffectsProvider(this.components);

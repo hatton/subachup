@@ -1,6 +1,7 @@
-using Subachup.Core;
+using subachup.Core;
+using subachup.Core;
 
-namespace Subachup
+namespace subachup
 {
     partial class ListenControl
     {
@@ -30,7 +31,7 @@ namespace Subachup
         /// </summary>
         private void InitializeComponent()
         {
-            this._utteranceImageGrid = new UtteranceImageGridNew();
+            this._utteranceImageGrid = new UtteranceImageGrid();
             this.SuspendLayout();
             // 
             // _utteranceImageGrid
@@ -57,6 +58,6 @@ namespace Subachup
 
         #endregion
 
-        private UtteranceImageGridNew _utteranceImageGrid;
+        private UtteranceImageGrid _utteranceImageGrid;
     }
 }

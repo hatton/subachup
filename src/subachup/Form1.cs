@@ -8,11 +8,11 @@ using System.IO;
 using System.Diagnostics;
 using System.Text;
 using subachup;
-using Subachup.Core;
+using subachup.Core;
 using subachup.Properties;
+using System.Linq;
 
-
-namespace Subachup
+namespace subachup
 {
 	/// <summary>
 	/// Summary description for Form1.
@@ -42,8 +42,9 @@ namespace Subachup
         private MenuItem mnuPaste;
 
         protected TabPage  _previousPage;
+	    private UtteranceCollection _currentUtterances;
 
-		public Form1()
+	    public Form1()
 		{
 			//
 			// Required for Windows Form Designer support
@@ -351,8 +352,8 @@ namespace Subachup
                         LiftProject project = new LiftProject();
             project.LoadFromSubachupDataDir(collectionFilePath);
 
-            UtteranceCollection.CurrentUtteranceSet = new UtteranceCollection(project);
-            UtteranceCollection.CurrentUtteranceSet.LoadFromCollectionFile(collectionFilePath);
+            _currentUtterances = new UtteranceCollection(project);
+            _currentUtterances.LoadFromCollectionFile(collectionFilePath);
 
             mruHandler1.AddRecentlyUsedFile(collectionFilePath);
             UpdateWindowCaption();
@@ -362,15 +363,18 @@ namespace Subachup
 
 
             _modeControl.TabPages.Clear();
-            AddTab(new ListenControl(_propertyTable), "Listen");
-            AddTab(new RecognitionQuizControl(_propertyTable), "Comprehension Quiz");
+            AddTab(new ListenControl(_propertyTable, this, _currentUtterances ), "Listen");
+
+            QuizPresentationModel pm = new QuizPresentationModel(this, _currentUtterances);
+	        UtteranceImageGrid imageGrid = new UtteranceImageGrid();
+	        AddTab(new RecognitionQuizControl(imageGrid, pm, _propertyTable), "Comprehension Quiz");
             //  AddTab(new GatherTab(_propertyTable), "Gather");
 
             _previousPage = _modeControl.SelectedTab;
             if (_modeControl.SelectedTab != null)
                 CurrentSubachupControl.Showing();
 
-            UtteranceCollection.CurrentUtteranceSet.DidChange();
+            _currentUtterances.DidChange();
         }
 
         private void UseImageMapFile(string path)
@@ -381,12 +385,26 @@ namespace Subachup
             mruHandler1.AddRecentlyUsedFile(path);
             UpdateWindowCaption();
 
+
+            
             Settings.Default.PreviousFile = path;
 
             _modeControl.TabPages.Clear();
             LiftProject project = new LiftProject();
             project.LoadFromSubachupDataDir(path);
-            AddTab(new ImageMapDrillControl(path, project), "Practice");
+
+             SvgMapReader map = new SvgMapReader(path);
+
+           _currentUtterances = new UtteranceCollection(project);
+            _currentUtterances.Load(map);
+            
+            var idsOfUtterancesInMap = map.GetIdsOfUtterancesInMap();
+            var utterancesInMap = _currentUtterances.Where(u => idsOfUtterancesInMap.Contains(u.SubachupRegion));
+            QuizPresentationModel pm = new QuizPresentationModel(this, utterancesInMap);
+            ImageMapBox imageBox = new ImageMapBox();
+            imageBox.Init(map, _currentUtterances);
+
+            AddTab(new RecognitionQuizControl(imageBox, pm, _propertyTable), "Scene");
 
             _previousPage = _modeControl.SelectedTab;
             if (_modeControl.SelectedTab != null)
@@ -421,10 +439,10 @@ namespace Subachup
 
 		private void _modeControl_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-            if (UtteranceCollection.CurrentUtteranceSet != null)
+            if (_currentUtterances != null)
             {
                 //save the score stuff
-                UtteranceCollection.CurrentUtteranceSet.SaveUserStuff();
+                _currentUtterances.SaveUserStuff();
             }
             if (_previousPage != null)
             {
@@ -450,7 +468,7 @@ namespace Subachup
 
 		private void mnuSave_Click(object sender, System.EventArgs e)
 		{
-			UtteranceCollection.CurrentUtteranceSet.SavePlayList(PreviousCollectionFile);
+            _currentUtterances.SavePlayList(PreviousCollectionFile);
 		}
 
 		private void mnuSaveAs_Click(object sender, System.EventArgs e)
@@ -460,7 +478,7 @@ namespace Subachup
 			folderBrowserDialog1.ShowNewFolderButton=true;
 			if(DialogResult.OK != folderBrowserDialog1.ShowDialog())
 				return;
-			UtteranceCollection.CurrentUtteranceSet.SavePlayList(folderBrowserDialog1.SelectedPath);
+            _currentUtterances.SavePlayList(folderBrowserDialog1.SelectedPath);
 			PreviousCollectionFile = folderBrowserDialog1.SelectedPath;
 
 			UpdateWindowCaption();

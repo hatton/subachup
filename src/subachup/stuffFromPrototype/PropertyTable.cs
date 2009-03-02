@@ -23,7 +23,7 @@ using System.Runtime.Serialization;
 using System.IO;
 using System.Threading;		// for Monitor (dlh)
 
-namespace Subachup
+namespace subachup
 {
 	/// <summary>
 	/// Summary description for PropertyTable.

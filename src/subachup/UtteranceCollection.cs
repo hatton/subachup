@@ -8,7 +8,7 @@ using System.Xml;
 using subachup;
 
 
-namespace Subachup
+namespace subachup
 {
 	/// <summary>
 	/// Summary description for UtteranceCollection.
@@ -16,7 +16,6 @@ namespace Subachup
 	public class UtteranceCollection: List<IQuizItem>
 	{
 	    private readonly LiftProject _liftProject;
-	    protected  static UtteranceCollection _currentUtteranceSet;
 	    public event System.EventHandler Changed;
 
 		public UtteranceCollection(LiftProject liftProject)
@@ -24,20 +23,20 @@ namespace Subachup
 		    _liftProject = liftProject;
 		}
 
-	    public static UtteranceCollection CurrentUtteranceSet
-		{
-			get
-			{
-//				if(_currentUtteranceSet==null)
-//					CurrentUtteranceSet= new UtteranceCollection();
-
-				return _currentUtteranceSet;
-			}
-			set
-			{
-				_currentUtteranceSet = value;
-			}
-		}
+//	    public static UtteranceCollection CurrentUtteranceSet
+//		{
+//			get
+//			{
+////				if(_currentUtteranceSet==null)
+////					CurrentUtteranceSet= new UtteranceCollection();
+//
+//				return _currentUtteranceSet;
+//			}
+//			set
+//			{
+//				_currentUtteranceSet = value;
+//			}
+//		}
 
         public void DidChange()
         {
@@ -191,6 +190,8 @@ namespace Subachup
 
                 var utterance = new Utterance(word, gloss, soundPath, imagePath);
                 utterance.IdOfLiftEntry = entry.Id;
+
+                utterance.SubachupRegion = entry.SubachupRegion;
                 Add(utterance);
             }
         }
@@ -200,8 +201,13 @@ namespace Subachup
             foreach(string hitRegionId in svg.GetRegionIds())
             {
                 var entry= _liftProject.GetEntryFromHitRegionId(hitRegionId);
-                
+                if(entry == null)
+                {
+                    MessageBox.Show("Couldn't find an entry with the subachup id of '" + hitRegionId + "'.");
+                    continue;
+                }
                 var utterance = new Utterance("??", entry.Gloss,entry.SoundPath, entry.ImagePath);
+                utterance.SubachupRegion = entry.SubachupRegion;
                 Add(utterance);
             }
 	    }

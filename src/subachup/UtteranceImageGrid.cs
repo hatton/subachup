@@ -5,22 +5,37 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using subachup.utility;
 
-namespace Subachup.Core
+namespace subachup.Core
 {
-    public partial class UtteranceImageGridNew : UserControl
+    public partial class UtteranceImageGrid : UserControl, IAnswersControl
     {
         public event System.EventHandler Clicked;
-
-        public UtteranceImageGridNew()
+        public event Proc<IEnumerable<IQuizItem>> GaveAnAnswer;
+        private IEnumerable<IQuizItem> _currentUtterances;
+        public UtteranceImageGrid(IEnumerable<IQuizItem> currentUtterances):this()
         {
-            InitializeComponent(); 
+            CurrentUtterances = currentUtterances;
+        }
+
+        public UtteranceImageGrid()
+        {
+            InitializeComponent();
             _locusEffectsProvider.Initialize();
         }
 
         private void _imageGrid_Click(object sender, System.EventArgs e)
         {
-            Clicked.Invoke(this, e);
+            //Clicked.Invoke(this, e);
+            if(GaveAnAnswer !=null)
+            {
+                if (Grid.SelectedItems.Count == 0)
+                    return;
+    
+                ListViewItem item = Grid.SelectedItems[0];
+                GaveAnAnswer.Invoke(new List<IQuizItem> {(Utterance) item.Tag});
+            }
         }
 
         public ListView Grid
@@ -36,16 +51,19 @@ namespace Subachup.Core
             _imageGrid.SelectedItems.Clear();
         }
 
-        public void LoadGrid()
+
+        public void LoadContents()
         {
             _imageGrid.SuspendLayout();
             _imageList.Images.Clear();
             _imageGrid.Items.Clear();
-            foreach (Utterance utterance in UtteranceCollection.CurrentUtteranceSet)
+            foreach (Utterance utterance in CurrentUtterances)
             {
                 if (utterance != null)//hack... bug in there
                     AddImageItem(utterance);
             }
+
+            Shuffle();
             //			AddFromWordsList();
             _imageGrid.ResumeLayout(true);
         }
@@ -151,7 +169,7 @@ namespace Subachup.Core
         private void ReplaceImage(ListViewItem item, Image image)
         {
             ((Utterance)item.Tag).TheImage = image;
-            LoadGrid();
+            LoadContents();
         }
 
         public ListView.SelectedListViewItemCollection SelectedItems
@@ -161,6 +179,13 @@ namespace Subachup.Core
                 return _imageGrid.SelectedItems;
             }
         }
+
+        public IEnumerable<IQuizItem> CurrentUtterances
+        {
+            get { return _currentUtterances; }
+            set { _currentUtterances = value; }
+        }
+
 //        private void handleFileDropTimer_Tick(object sender, System.EventArgs e)
 //        {
 //            System.Diagnostics.Debug.Assert(_fileToDrop != null);

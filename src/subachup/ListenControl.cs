@@ -1,24 +1,24 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 
-namespace Subachup
+namespace subachup
 {
     public partial class ListenControl : SubachupTabControl
     {
-        public ListenControl()
+        private SoundPlayer _soundPlayer;
+
+        public ListenControl(Form parentFormForPlayer)
         {
             InitializeComponent();
         }
 
-        public ListenControl(PropertyTable propertyTable)
+        public ListenControl(PropertyTable propertyTable, Form parentFormForPlayer, IEnumerable<IQuizItem> quizItems)
             :base(propertyTable)
         {
+            _soundPlayer = new SoundPlayer(parentFormForPlayer);
             InitializeComponent();
+            _utteranceImageGrid.CurrentUtterances = quizItems;
         }
 
         private void _utteranceImageGrid_Clicked(object sender, EventArgs e)
@@ -27,8 +27,10 @@ namespace Subachup
                 return;
             ListViewItem item = _utteranceImageGrid.Grid.SelectedItems[0];
             string path = ((Utterance)item.Tag).SoundPath;
-            nBASS.Stream sound = _player.LoadStream(ResolveSoundPath(path));
-            sound.Play(true, nBASS.StreamPlayFlags.Default);		
+            //nBASS.Stream sound = _player.LoadStream(ResolveSoundPath(path));
+            _soundPlayer.SetCurrentUtterance(path);
+            _soundPlayer.PlayCurrentUtterace();
+            //sound.Play(true, nBASS.StreamPlayFlags.Default);		
         }
 
         private void ListenControl_Load(object sender, EventArgs e)
@@ -38,7 +40,7 @@ namespace Subachup
 
         public override void Reload()
         {
-            _utteranceImageGrid.LoadGrid();
+            _utteranceImageGrid.LoadContents();
         }
 
         override public bool PasteImage()

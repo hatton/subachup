@@ -6,17 +6,22 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using BigMansStuff.LocusEffects;
+using subachup.utility;
+using System.Linq;
 
 namespace subachup
 {
-    public partial class ImageMapBox : Panel
+    public partial class ImageMapBox : Panel, IAnswersControl
     {
         private SvgMapReader _map;
         private PictureBox _pictureBox;
         public event subachup.utility.Proc<IEnumerable<string>> ClickedInOneOrMoreRegions;
         public event subachup.utility.Proc ClickedOutsideRegionAllRegions;
+        public event Proc<IEnumerable<IQuizItem>> GaveAnAnswer;
 
         BigMansStuff.LocusEffects.LocusEffectsProvider _locusEffectsProvider;
+        private IEnumerable<IQuizItem> _quizItems;
+
         public ImageMapBox()
         {
             // InitializeComponent();
@@ -26,8 +31,9 @@ namespace subachup
          }
 
 
-        public void SetMap(SvgMapReader map)
+        public void Init(SvgMapReader map, IEnumerable<IQuizItem> quizItems)
         {
+            _quizItems = quizItems;
             _map = map;
             _pictureBox = new PictureBox();
             //nb: we don't use "zoom" yet because we have to figure out how to also zoom the hit regions
@@ -44,46 +50,48 @@ namespace subachup
 
         void pictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            var regionsThatWereClickedIn = new List<string>();
-            foreach (var regionId in _map.GetRegionIds())
+            var regionsThatWereClickedIn = _map.GetRegionIds(e.X, e.Y);
+ 
+            if (regionsThatWereClickedIn.Count() == 0)
             {
-                var region = _map.GetRegion(regionId);
-                if (region.Contains(e.X, e.Y))
-                {
-                    regionsThatWereClickedIn.Add(regionId);
-                    break;
-                }
-            }
-
-            if (regionsThatWereClickedIn.Count == 0)
-            {
-                if(ClickedOutsideRegionAllRegions !=null)
-                {
-                    ClickedOutsideRegionAllRegions.Invoke();
-                }
+//                if(ClickedOutsideRegionAllRegions !=null)
+//                {
+//                    ClickedOutsideRegionAllRegions.Invoke();
+//                }
             }
             else if(ClickedInOneOrMoreRegions!=null)
             {
-                ClickedInOneOrMoreRegions.Invoke(regionsThatWereClickedIn);
+//                ClickedInOneOrMoreRegions.Invoke(regionsThatWereClickedIn);
             }
-
+            else if (GaveAnAnswer != null)
+            {
+                //review... this is a kind of upside-down way to think abou this!  The
+                // problem is that we have a many-to-many relationship between utterances and regions.
+                //Currently this control has not idea of what the expected answer is
+                List<IQuizItem> questionsForWhichThisClickIsAValidAnswer = new List<IQuizItem>();
+                foreach (var regionId in regionsThatWereClickedIn)
+                {
+                    questionsForWhichThisClickIsAValidAnswer.Add(_quizItems.First(q=> q.SubachupRegion == regionId));
+                }
+                GaveAnAnswer.Invoke(questionsForWhichThisClickIsAValidAnswer);
+            }
 
         }
 
         private void HighlightRegions(IEnumerable<string> regionIds)
         {
-            foreach (var id in regionIds)
-            {
-                var region = _map.GetRegion(id);
-                region = this.RectangleToScreen(region);
-
-                _locusEffectsProvider.StopActiveLocusEffect();//else, it crashes if there is another one!
-                _locusEffectsProvider.ShowLocusEffect(GetFormAncestor(), region, 
-                                                      BigMansStuff.LocusEffects.LocusEffectsProvider.DefaultLocusEffectBeacon);
-
-                break;//TODO currently we can't handle more than one, using this method (locuseffects crashes)
-                    
-            }
+//            foreach (var id in regionIds)
+//            {
+//                var region = _map.GetRegion(id);
+//                region = this.RectangleToScreen(region);
+//
+//                _locusEffectsProvider.StopActiveLocusEffect();//else, it crashes if there is another one!
+//                _locusEffectsProvider.ShowLocusEffect(GetFormAncestor(), region, 
+//                                                      BigMansStuff.LocusEffects.LocusEffectsProvider.DefaultLocusEffectBeacon);
+//
+//                break;//TODO currently we can't handle more than one, using this method (locuseffects crashes)
+//                    
+//            }
         }
 
         private Form GetFormAncestor()
@@ -125,5 +133,12 @@ namespace subachup
 //                }
 //            }
 //        }
+        public void LoadContents()
+        {
+        }
+
+        public void PointOutUtterance(Utterance utterance)
+        {
+        }
     }
 }

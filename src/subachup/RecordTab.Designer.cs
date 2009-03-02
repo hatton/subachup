@@ -1,4 +1,4 @@
-namespace Subachup
+namespace subachup
 {
     partial class RecordTab
     {
