@@ -8,6 +8,14 @@ using System.Xml;
 
 namespace subachup
 {
+    /// <summary>
+    /// This class reads a particular kind svg file (at least those created by InkScape).  These
+    /// files created for Subachup contain a single bitmap and multiple rectangles over that image.
+    /// These rectangles have their "id" property set to a value which is also found in the corresponding
+    /// LIFT dictionary file, under LexEntry/"SubachupRegion" field.  If multiple rectangles are needed
+    /// for a single LexEntry ("utterance"), then the id should just have a digit appended to its name,
+    /// e.g. "boySittingDown3".  This is needed because ids in svg must be unique.
+    /// </summary>
     public class SvgMapReader
     {
         private readonly string _path;
@@ -68,9 +76,9 @@ namespace subachup
             return id;
         }
 
-        public IEnumerable<Rectangle> GetRectsForUtterance(string id)
+        public IEnumerable<Rectangle> GetRectsForUtterance(string subachupId)
         {
-            var nodes = _mapDom.SelectNodes(string.Format("x:svg/x:g/x:rect[contains(@id,id)]"), _nameSpaceManager);
+            var nodes = _mapDom.SelectNodes(string.Format("x:svg/x:g/x:rect[contains(@id,'{0}')]", subachupId), _nameSpaceManager);
             foreach (XmlNode node in nodes)
             {
                 yield return GetRectangleFromNode(node);

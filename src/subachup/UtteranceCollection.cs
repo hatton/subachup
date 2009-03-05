@@ -191,7 +191,7 @@ namespace subachup
                 var utterance = new Utterance(word, gloss, soundPath, imagePath);
                 utterance.IdOfLiftEntry = entry.Id;
 
-                utterance.SubachupRegion = entry.SubachupRegion;
+                utterance.SubachupRegionId = entry.SubachupRegion;
                 Add(utterance);
             }
         }
@@ -207,7 +207,7 @@ namespace subachup
                     continue;
                 }
                 var utterance = new Utterance("??", entry.Gloss,entry.SoundPath, entry.ImagePath);
-                utterance.SubachupRegion = entry.SubachupRegion;
+                utterance.SubachupRegionId = entry.SubachupRegion;
                 Add(utterance);
             }
 	    }

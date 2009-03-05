@@ -30,7 +30,7 @@ namespace subachup
         [NormallyReadOnly, ForIndividualUser]
         DateTime LastQuizzedDate { get; set; }
 
-        string SubachupRegion { get; set; }
+        string SubachupRegionId { get; set; }
     }
 
     /// <summary>
@@ -276,7 +276,7 @@ namespace subachup
 			}
 		}
 
-        public string SubachupRegion { get; set;}
+        public string SubachupRegionId { get; set;}
 
         public int DurationSeconds
 		{

@@ -216,6 +216,7 @@ namespace subachup
             this.Menu = this.mainMenu1;
             this.Name = "Form1";
             this.Text = "Subachup!";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Closing += new System.ComponentModel.CancelEventHandler(this.Form1_Closing);
             ((System.ComponentModel.ISupportInitialize)(this.mruHandler1)).EndInit();
@@ -399,7 +400,7 @@ namespace subachup
             _currentUtterances.Load(map);
             
             var idsOfUtterancesInMap = map.GetIdsOfUtterancesInMap();
-            var utterancesInMap = _currentUtterances.Where(u => idsOfUtterancesInMap.Contains(u.SubachupRegion));
+            var utterancesInMap = _currentUtterances.Where(u => idsOfUtterancesInMap.Contains(u.SubachupRegionId));
             QuizPresentationModel pm = new QuizPresentationModel(this, utterancesInMap);
             ImageMapBox imageBox = new ImageMapBox();
             imageBox.Init(map, _currentUtterances);
