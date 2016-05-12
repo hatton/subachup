@@ -71,7 +71,6 @@
             this.Controls.Add(this._imageGrid);
             this.Name = "UtteranceImageGridNew";
             this.Size = new System.Drawing.Size(358, 271);
-            this.Load += new System.EventHandler(this.UtteranceImageGridNew_Load);
             this.ResumeLayout(false);
 
         }

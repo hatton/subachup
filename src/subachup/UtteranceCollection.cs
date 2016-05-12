@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System. Text;
 using System.IO;
-using System.Collections;
 using System.Windows.Forms;
-using System.Xml;
-using subachup;
 
 
 namespace subachup
@@ -23,20 +18,6 @@ namespace subachup
 		    _liftProject = liftProject;
 		}
 
-//	    public static UtteranceCollection CurrentUtteranceSet
-//		{
-//			get
-//			{
-////				if(_currentUtteranceSet==null)
-////					CurrentUtteranceSet= new UtteranceCollection();
-//
-//				return _currentUtteranceSet;
-//			}
-//			set
-//			{
-//				_currentUtteranceSet = value;
-//			}
-//		}
 
         public void DidChange()
         {

@@ -1,24 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using subachup;
 using subachup.utility;
 
 namespace subachup
 {
-    public interface IAnswersControl
-    {
-        event Proc<IEnumerable<IQuizItem>> GaveAnAnswer;
-        IEnumerable<IQuizItem> QuizItems { get; set; }
-        void LoadContents();//IEnumerable<IQuizItem> choices);
-        void PointOutUtterance(Utterance utterance);
-        
-    }
-
+    /// <summary>
+    /// This control works with at least two kinds of quizes (grid of pictures or a single picture with hot regions.
+    /// The control for the actual quiz display is provided to the constructor. 
+    /// 
+    /// The logic controlling this is given as the PresentationModel.
+    /// </summary>
     public partial class RecognitionQuizControl : SubachupTabControl
     {
-        private IAnswersControl _answersControl;
-        private QuizPresentationModel _presentationModel;
+        private readonly IAnswersControl _answersControl;
+        private readonly QuizPresentationModel _presentationModel;
 
         public RecognitionQuizControl()
         {
@@ -104,7 +100,7 @@ namespace subachup
                 return;
 
             _presentationModel.ShowMeClicked();
-            _answersControl.PointOutUtterance((Utterance)_presentationModel.CurrentQuizItem);
+            _answersControl.ShowAnswerLocations((Utterance)_presentationModel.CurrentQuizItem);
         }
 
 
@@ -114,17 +110,5 @@ namespace subachup
             _answersControl.LoadContents();
             UpdateButtons();
         }
-
-//
-//        private void OnGridClicked(object sender, EventArgs e)
-//        {
-//            if (_utteranceImageGrid.Grid.SelectedItems.Count == 0)
-//                return;
-//
-//            ListViewItem item = _utteranceImageGrid.Grid.SelectedItems[0];
-//
-//            _presentationModel.QuizClick((Utterance)item.Tag);
-//            UpdateDisplay();
-//        }
 	}   
 }

@@ -2,10 +2,6 @@ using System;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Drawing;
-using System.Collections;
-using System. Text;
-using System.Diagnostics;
-using HundredMilesSoftware.UltraID3Lib;
 
 namespace subachup
 {

@@ -1,13 +1,6 @@
 using System;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
 using System.Windows.Forms;
-using System.Data;
 using System.IO;
-using System.Diagnostics;
-using System.Text;
-using subachup;
 using subachup.Core;
 using subachup.Properties;
 using System.Linq;
@@ -15,9 +8,9 @@ using System.Linq;
 namespace subachup
 {
 	/// <summary>
-	/// Summary description for Form1.
+	/// The Shell hosts the various quiz controls
 	/// </summary>
-	public class Form1 : System.Windows.Forms.Form
+	public class Shell : System.Windows.Forms.Form
     {
         private System.ComponentModel.IContainer components;
 
@@ -44,7 +37,7 @@ namespace subachup
         protected TabPage  _previousPage;
 	    private UtteranceCollection _currentUtterances;
 
-	    public Form1()
+	    public Shell()
 		{
 			//
 			// Required for Windows Form Designer support
@@ -78,7 +71,7 @@ namespace subachup
 		private void InitializeComponent()
 		{
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Shell));
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.menuItem1 = new System.Windows.Forms.MenuItem();
@@ -129,13 +122,11 @@ namespace subachup
             // 
             this.menuISave.Index = 1;
             this.menuISave.Text = "&Save";
-            this.menuISave.Click += new System.EventHandler(this.mnuSave_Click);
             // 
             // menuSaveAs
             // 
             this.menuSaveAs.Index = 2;
             this.menuSaveAs.Text = "Save &As...";
-            this.menuSaveAs.Click += new System.EventHandler(this.mnuSaveAs_Click);
             // 
             // menuItem3
             // 
@@ -153,31 +144,11 @@ namespace subachup
             this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.mnuPaste});
             this.menuItem2.Text = "&Edit";
-            // 
-            // mnuPaste
-            // 
-            this.mnuPaste.Enabled = false;
-            this.mnuPaste.Index = 0;
-            this.mnuPaste.Shortcut = System.Windows.Forms.Shortcut.CtrlV;
-            this.mnuPaste.Text = "&Paste Picture";
-            this.mnuPaste.Click += new System.EventHandler(this.OnPastePicture);
-            // 
+             // 
             // menuItem5
             // 
             this.menuItem5.Index = -1;
             this.menuItem5.Text = "-";
-            // 
-            // mnuSave
-            // 
-            this.mnuSave.Index = -1;
-            this.mnuSave.Text = "&Save";
-            this.mnuSave.Click += new System.EventHandler(this.mnuSave_Click);
-            // 
-            // mnuSaveAs
-            // 
-            this.mnuSaveAs.Index = -1;
-            this.mnuSaveAs.Text = "Save As...";
-            this.mnuSaveAs.Click += new System.EventHandler(this.mnuSaveAs_Click);
             // 
             // mruHandler1
             // 
@@ -217,7 +188,7 @@ namespace subachup
             this.Name = "Form1";
             this.Text = "Subachup!";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.OnLoad);
             this.Closing += new System.ComponentModel.CancelEventHandler(this.Form1_Closing);
             ((System.ComponentModel.ISupportInitialize)(this.mruHandler1)).EndInit();
             this.ResumeLayout(false);
@@ -226,10 +197,7 @@ namespace subachup
 		#endregion
 
 
-
-	
-
-		private void Form1_Load(object sender, System.EventArgs e)
+		private void OnLoad(object sender, System.EventArgs e)
 		{
 			_propertyTable.RestoreFromFile(null);
 
@@ -237,17 +205,6 @@ namespace subachup
 			{
 				OpenFile(Settings.Default.PreviousFile);
 			}
-
-			//UtteranceCollection.CurrentUtteranceSet.LoadUserStuff();
-
-//
-//             AddTab(new ListenControl(_propertyTable), "Listen");
-//           AddTab(new RecognitionQuizControl(_propertyTable), "Comprehension Quiz");
-//          //  AddTab(new GatherTab(_propertyTable), "Gather");
-//
-//            _previousPage = _modeControl.SelectedTab;
-//            if (_modeControl.SelectedTab != null)
-//                CurrentSubachupControl.Showing();
 
             if(!string.IsNullOrEmpty(Settings.Default.PreviousFile) && File.Exists(Settings.Default.PreviousFile))
             {
@@ -277,8 +234,6 @@ namespace subachup
 
         }
 
-
-
         private SubachupTabControl CurrentSubachupControl
         {
             get
@@ -291,10 +246,6 @@ namespace subachup
 		{
 			this.Text = Application.ProductName + "   " + PreviousCollectionFile;
 		}
-
-	
-
-
 
 		private void mruHandler1_MRUItemClicked(object sender, MostRecentlyUsedHandler.MRUItemClickedEventArgs e)
 		{
@@ -466,6 +417,7 @@ namespace subachup
                 ((SubachupTabControl)_previousPage.Tag).Showing();
 		}
 
+        /*
 
 		private void mnuSave_Click(object sender, System.EventArgs e)
 		{
@@ -495,6 +447,11 @@ namespace subachup
 				return path;
 			}
 		}
+        private void OnPastePicture(object sender, EventArgs e)
+        {
+            CurrentSubachupControl.PasteImage();
+        }
+         */
 
 		private string PreviousCollectionFile
 		{
@@ -502,9 +459,6 @@ namespace subachup
 			set {_propertyTable.SetProperty("PreviousDirectory",value);}
 		}
 
-        private void OnPastePicture(object sender, EventArgs e)
-        {
-            CurrentSubachupControl.PasteImage();
-        }
+
 	}
 }

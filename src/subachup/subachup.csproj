@@ -70,11 +70,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAnswersControl.cs" />
     <Compile Include="QuestionChooser.cs" />
     <Compile Include="QuizPresentationModel.cs" />
     <Compile Include="sound\SoundPlayer.cs" />
     <Compile Include="utility\DelegateDefinitions.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="Shell.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="utility\GenericEventArgs.cs" />
@@ -99,8 +100,8 @@
     <Compile Include="ListenControl.Designer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Shell.resx">
+      <DependentUpon>Shell.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImageMap\ImageMapBox.resx">
       <DependentUpon>ImageMapBox.cs</DependentUpon>
