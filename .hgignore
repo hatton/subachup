@@ -1,7 +1,0 @@
-syntax: glob
-*.user
-src\_ReSharper.Subachup
-src/*.suo
-Debug
-output
-build

@@ -1,0 +1,6 @@
+*.user
+_ReSharper.Subachup
+*.suo
+output
+obj
+src/packages
